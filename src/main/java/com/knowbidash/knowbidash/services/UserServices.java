@@ -1,6 +1,6 @@
 package com.knowbidash.knowbidash.services;
 
-import com.knowbidash.knowbidash.entities.entityUser.User;
+import com.knowbidash.knowbidash.entities.User;
 import com.knowbidash.knowbidash.exceptions.DataBaseException;
 import com.knowbidash.knowbidash.exceptions.ResourceNotFoundException;
 import com.knowbidash.knowbidash.repositories.UserRepositories;

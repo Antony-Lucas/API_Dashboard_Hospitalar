@@ -1,6 +1,6 @@
 package com.knowbidash.knowbidash.controller;
 
-import com.knowbidash.knowbidash.entities.entityUser.User;
+import com.knowbidash.knowbidash.entities.User;
 import com.knowbidash.knowbidash.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

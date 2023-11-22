@@ -1,5 +1,7 @@
-package com.knowbidash.knowbidash.entities.entityUser;
+package com.knowbidash.knowbidash.entities;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -13,10 +15,12 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonSerialize(using = ToStringSerializer.class)
     private long id;
     private String userName;
     @Column(unique = true)
     private String aliasName;
+    private String cargo;
     @Column(unique = true)
     private String email;
     private String passWord;
@@ -25,10 +29,11 @@ public class User implements Serializable {
 
     }
 
-    public User(long id, String userName, String aliasName, String email, String passWord) {
+    public User(long id, String userName, String aliasName, String cargo,String email, String passWord) {
         this.id = id;
         this.userName = userName;
         this.aliasName = aliasName;
+        this.cargo = cargo;
         this.email = email;
         this.passWord = passWord;
     }
@@ -57,6 +62,13 @@ public class User implements Serializable {
         this.aliasName = aliasName;
     }
 
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
 
     public String getEmail() {
         return email;
