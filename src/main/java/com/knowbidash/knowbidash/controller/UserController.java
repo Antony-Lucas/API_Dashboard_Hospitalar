@@ -1,20 +1,39 @@
 package com.knowbidash.knowbidash.controller;
 
+import com.fasterxml.jackson.core.exc.StreamWriteException;
+import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knowbidash.knowbidash.entities.User;
 import com.knowbidash.knowbidash.services.UserServices;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
+    public static String HEADER_ATRIBUTE;
+    public static String ATRIBUTE_PREFIX;
+    @Value("${jwt.secret}")
+    public static int TOKEN_EXPIRATION;
+    @Value("${jwt.expirationDateinMS}")
+    public static int REFRESH_TOKEN_EXPIRATION;
+    @Value("${jwt.tokenPassword}")
+    public static String TOKEN_PASSWORD;
     @Autowired
     private UserServices userServices;
 
