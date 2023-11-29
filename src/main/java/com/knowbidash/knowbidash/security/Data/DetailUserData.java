@@ -16,19 +16,19 @@ public class DetailUserData implements UserDetails {
     private static final long SerialVersionUID = 1L;
 
     private Long id;
-    private String user;
-    private String aliasname;
+    private String userName;
+    private String aliasName;
     private String email;
     @JsonIgnore
-    private String password;
+    private String passWord;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public DetailUserData(Long id, String user, String aliasname, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public DetailUserData(Long id, String userName, String aliasName, String email, String passWord, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
-        this.user = user;
-        this.aliasname = aliasname;
+        this.userName = userName;
+        this.aliasName = aliasName;
         this.email = email;
-        this.password = password;
+        this.passWord = passWord;
         this.authorities = authorities;
     }
 
@@ -56,7 +56,7 @@ public class DetailUserData implements UserDetails {
     }
 
     public String getFullUserName() {
-        return user;
+        return userName;
     }
 
     public String getEmail() {
@@ -65,12 +65,12 @@ public class DetailUserData implements UserDetails {
 
     @Override
     public String getUsername() {
-        return aliasname;
+        return aliasName;
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return passWord;
     }
 
     @Override
