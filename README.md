@@ -7,5 +7,7 @@
 
 ![Captura de tela 2023-11-25 123911](https://github.com/KnowBI-Business-Intelligence/KnowbiDash-BackEnd/assets/54651622/f8a89f1b-2324-43da-a766-14f0746b59a0)
 
-# Spring Security architeture
-![image](https://github.com/KnowBI-Business-Intelligence/KnowbiDash-BackEnd/assets/54651622/694831f9-9357-46d0-8cef-ae6e717ce57c)
+## Spring Security architeture
+
+![Sem título](https://github.com/KnowBI-Business-Intelligence/KnowbiDash-BackEnd/assets/54651622/417a44d9-6903-47f3-a681-af8627d64383)
+
