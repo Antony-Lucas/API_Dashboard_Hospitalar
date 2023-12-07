@@ -4,18 +4,47 @@ import java.util.List;
 
 public class UserInfoResponse {
 
+    private String token;
+    private String type = "Bearer";
+    private String refreshToken;
     private Long id;
     private String userName;
     public String aliasName;
     private String email;
     private List<String> roles;
 
-    public UserInfoResponse(Long id, String userName, String aliasName,String email, List<String> roles) {
+    public UserInfoResponse(String accessToken, String refreshToken, Long id, String userName, String aliasName, String email, List<String> roles) {
+        this.token = accessToken;
+        this.refreshToken = refreshToken;
         this.id = id;
         this.userName = userName;
         this.aliasName = aliasName;
         this.email = email;
         this.roles = roles;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 
     public Long getId() {
@@ -26,12 +55,12 @@ public class UserInfoResponse {
         this.id = id;
     }
 
-    public String getUsername() {
+    public String getUserName() {
         return userName;
     }
 
-    public void setUsername(String username) {
-        this.userName = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getAliasName() {
@@ -52,5 +81,9 @@ public class UserInfoResponse {
 
     public List<String> getRoles() {
         return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 }

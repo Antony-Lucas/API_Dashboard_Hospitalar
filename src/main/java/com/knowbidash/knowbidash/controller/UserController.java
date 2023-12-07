@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/users")
+@RequestMapping(value = "/api/users")
 public class UserController {
     public static String HEADER_ATRIBUTE;
     public static String ATRIBUTE_PREFIX;
@@ -45,7 +46,8 @@ public class UserController {
         this.encoder = encoder;
     }
 
-    @GetMapping
+    @GetMapping("/get")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR')")
     public ResponseEntity<List<User>> findAll(){
         List<User> list = userServices.findAll();
         return ResponseEntity.ok().body(list);
