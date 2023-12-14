@@ -29,12 +29,6 @@ import java.util.Map;
 public class UserController {
     public static String HEADER_ATRIBUTE;
     public static String ATRIBUTE_PREFIX;
-    @Value("${jwt.secret}")
-    public static int TOKEN_EXPIRATION;
-    @Value("${jwt.expirationDateinMS}")
-    public static int REFRESH_TOKEN_EXPIRATION;
-    @Value("${jwt.tokenPassword}")
-    public static String TOKEN_PASSWORD;
     @Autowired
     private UserServices userServices;
 
