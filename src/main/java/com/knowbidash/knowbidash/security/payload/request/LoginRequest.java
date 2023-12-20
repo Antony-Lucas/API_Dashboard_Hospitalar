@@ -4,16 +4,16 @@ import jakarta.validation.constraints.NotBlank;
 
 public class LoginRequest {
     @NotBlank
-    private String aliasName;
+    private String userName;
     @NotBlank
     private String passWord;
 
-    public String getAliasName() {
-        return aliasName;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setAliasName(String aliasName) {
-        this.aliasName = aliasName;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassWord() {

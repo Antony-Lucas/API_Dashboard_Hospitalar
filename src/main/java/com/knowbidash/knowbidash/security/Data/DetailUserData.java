@@ -1,12 +1,11 @@
 package com.knowbidash.knowbidash.security.Data;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.knowbidash.knowbidash.entities.User;
+import com.knowbidash.knowbidash.entities.postgres.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -17,16 +16,16 @@ public class DetailUserData implements UserDetails {
 
     private Long id;
     private String userName;
-    private String aliasName;
+    private String fullUserName;
     private String email;
     @JsonIgnore
     private String passWord;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public DetailUserData(Long id, String userName, String aliasName, String email, String passWord, Collection<? extends GrantedAuthority> authorities) {
+    public DetailUserData(Long id, String userName, String fullUserName, String email, String passWord, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.userName = userName;
-        this.aliasName = aliasName;
+        this.fullUserName = fullUserName;
         this.email = email;
         this.passWord = passWord;
         this.authorities = authorities;
@@ -40,7 +39,7 @@ public class DetailUserData implements UserDetails {
         return new DetailUserData(
                 user.getId(),
                 user.getUserName(),
-                user.getAliasName(),
+                user.getfullUserName(),
                 user.getEmail(),
                 user.getPassWord(),
                 authorities);
@@ -56,7 +55,7 @@ public class DetailUserData implements UserDetails {
     }
 
     public String getFullUserName() {
-        return userName;
+        return fullUserName;
     }
 
     public String getEmail() {
@@ -65,7 +64,7 @@ public class DetailUserData implements UserDetails {
 
     @Override
     public String getUsername() {
-        return aliasName;
+        return userName;
     }
 
     @Override

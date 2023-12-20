@@ -9,16 +9,16 @@ public class UserInfoResponse {
     private String refreshToken;
     private Long id;
     private String userName;
-    public String aliasName;
+    public String fullUserName;
     private String email;
     private List<String> roles;
 
-    public UserInfoResponse(String accessToken, String refreshToken, Long id, String userName, String aliasName, String email, List<String> roles) {
+    public UserInfoResponse(String accessToken, String refreshToken, Long id, String userName, String fullUserName, String email, List<String> roles) {
         this.token = accessToken;
         this.refreshToken = refreshToken;
         this.id = id;
         this.userName = userName;
-        this.aliasName = aliasName;
+        this.fullUserName = fullUserName;
         this.email = email;
         this.roles = roles;
     }
@@ -63,12 +63,12 @@ public class UserInfoResponse {
         this.userName = userName;
     }
 
-    public String getAliasName() {
-        return aliasName;
+    public String getfullUserName() {
+        return fullUserName;
     }
 
-    public void setAliasName(String aliasName) {
-        this.aliasName = aliasName;
+    public void setfullUserName(String fullUserName) {
+        this.fullUserName = fullUserName;
     }
 
     public String getEmail() {

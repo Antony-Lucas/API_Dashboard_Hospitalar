@@ -1,6 +1,5 @@
 package com.knowbidash.knowbidash.security.payload.request;
 
-import com.knowbidash.knowbidash.entities.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -14,7 +13,7 @@ public class SignUpRequest {
 
     @NotBlank
     @Size(max = 40)
-    private String aliasName;
+    private String fullUserName;
     private String cargo;
 
     @NotBlank
@@ -36,12 +35,12 @@ public class SignUpRequest {
         this.userName = userName;
     }
 
-    public String getAliasName() {
-        return aliasName;
+    public String getfullUserName() {
+        return fullUserName;
     }
 
-    public void setAliasName(String aliasName) {
-        this.aliasName = aliasName;
+    public void setfullUserName(String fullUserName) {
+        this.fullUserName = fullUserName;
     }
 
     public String getCargo() {

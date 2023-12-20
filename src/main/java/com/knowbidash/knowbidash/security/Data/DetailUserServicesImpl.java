@@ -1,13 +1,11 @@
 package com.knowbidash.knowbidash.security.Data;
 
-import com.knowbidash.knowbidash.entities.User;
-import com.knowbidash.knowbidash.repositories.UserRepositories;
-import com.knowbidash.knowbidash.security.Data.DetailUserData;
+import com.knowbidash.knowbidash.entities.postgres.user.User;
+import com.knowbidash.knowbidash.repositories.postgres.repoUser.UserRepositories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
