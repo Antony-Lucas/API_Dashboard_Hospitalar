@@ -12,9 +12,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-
+@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping(value = "/api/users")
+@RequestMapping("/api/users")
 public class UserController {
     public static String HEADER_ATRIBUTE;
     public static String ATRIBUTE_PREFIX;
@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @GetMapping("/get")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR')")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<List<User>> findAll(){
         List<User> list = userServices.findAll();
         return ResponseEntity.ok().body(list);
