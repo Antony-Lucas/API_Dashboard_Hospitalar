@@ -78,6 +78,7 @@ public class WebConfigJWT {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/api/test/**").permitAll()
+                                .requestMatchers("/ws-atendimento-paciente/**").permitAll()
                                 .anyRequest().authenticated()
                 );
 
@@ -89,9 +90,16 @@ public class WebConfigJWT {
 
         http.cors(cors -> cors.configurationSource(request -> {
             CorsConfiguration configuration = new CorsConfiguration();
-            configuration.setAllowedOrigins(Arrays.asList("*"));
-            configuration.setAllowedMethods(Arrays.asList("*"));
-            configuration.setAllowedHeaders(Arrays.asList("*"));
+            configuration.setAllowedOrigins(Arrays.asList("http://localhost:333", "http://localhost:4200"));
+            configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "OPTIONS", "PUT", "DELETE"));
+            configuration.setAllowedHeaders(Arrays.asList("Origin",
+                    "Accept",
+                    "Content-Type",
+                    "Authorization",
+                    "X-Requested-With",
+                    "Cache-Control",
+                    "If-Modified-Since"));
+            configuration.setAllowCredentials(true);
             return configuration;
         }));
 

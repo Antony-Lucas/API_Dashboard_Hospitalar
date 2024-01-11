@@ -47,7 +47,10 @@ public class OracleDataBaseConfig {
         bean.setJpaVendorAdapter(adapter);
         HashMap<String,Object> properties = new HashMap<String, Object>();
         bean.setJpaPropertyMap(properties);
-        bean.setPackagesToScan("com.knowbidash.knowbidash.entities.oracle.atendimentoPaciente");
+        bean.setPackagesToScan(
+                "com.knowbidash.knowbidash.entities.oracle.atendimentoPaciente",
+                "com.knowbidash.knowbidash.streaming.JSONDataService",
+                "com.knowbidash.knowbidash.streaming.websocket");
         return bean;
     }
 
