@@ -7,12 +7,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Component
 @EnableScheduling
@@ -24,10 +27,12 @@ public class WebsocketStream {
     @Autowired
     private AtendimentoDataService dataService;
 
-    /*@MessageMapping("/filterdata")
-    public void streamAtendimentoData(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startData,
-                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endData){
+    /*@Scheduled(fixedRate = 2000)
+    public void streamAtendimentoDataperWeek(){
         try {
+            LocalDateTime startData = LocalDateTime.now().minusDays(7);
+            LocalDateTime endData = LocalDateTime.now();
+
             String jsonObject = dataService.getAtendimentos(startData, endData);
             messagingTemplate.convertAndSend(stompTopic, jsonObject);
         }catch (Exception e){
@@ -36,12 +41,9 @@ public class WebsocketStream {
     }*/
 
     @Scheduled(fixedRate = 2000)
-    public void streamAtendimentoDataperWeek(){
-        try {
-            LocalDateTime startData = LocalDateTime.now().minusDays(30);
-            LocalDateTime endData = LocalDateTime.now();
-
-            String jsonObject = dataService.getAtendimentos(startData, endData);
+    public void streamAtendimentoPerMonth(){
+        try{
+            String jsonObject = dataService.getAtendimentoPerMonth();
             messagingTemplate.convertAndSend(stompTopic, jsonObject);
         }catch (Exception e){
             e.printStackTrace();

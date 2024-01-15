@@ -1,5 +1,7 @@
 package com.knowbidash.knowbidash.databaseconfig;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,10 +35,16 @@ public class OracleDataBaseConfig {
     @Bean(name= "oracleDataSource")
     public DataSource dataSource() {
         DriverManagerDataSource ds = new DriverManagerDataSource();
-        ds.setUrl(env.getProperty("oracle.datasource.url"));
-        ds.setUsername(env.getProperty("oracle.datasource.username"));
-        ds.setPassword(env.getProperty("oracle.datasource.password"));
-        return ds;
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(env.getProperty("oracle.datasource.url"));
+        config.setUsername(env.getProperty("oracle.datasource.username"));
+        config.setPassword(env.getProperty("oracle.datasource.password"));
+        config.setMaximumPoolSize(7);
+        config.setIdleTimeout(30000);
+        config.setConnectionTimeout(30000);
+        config.setValidationTimeout(3000);
+        config.setMaxLifetime(600000);
+        return new HikariDataSource(config);
     }
 
     @Bean(name= "oracleManagerFactory")
@@ -51,6 +59,7 @@ public class OracleDataBaseConfig {
                 "com.knowbidash.knowbidash.entities.oracle.atendimentoPaciente",
                 "com.knowbidash.knowbidash.streaming.JSONDataService",
                 "com.knowbidash.knowbidash.streaming.websocket");
+        bean.setJpaPropertyMap(properties);
         return bean;
     }
 
