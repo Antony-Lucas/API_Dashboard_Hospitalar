@@ -32,19 +32,15 @@ public class WebsocketStream {
     @Autowired
     private KafkaProducer kafkaProducer;
 
-    @MessageMapping("/stream")
-    @SendTo("/topic1")
-    public void streamAtendimentoDataperWeek(String startData, String endData){
+    @Scheduled(fixedRate = 2000)
+    public void streamAtendimentoDataperWeek(){
         System.out.println("streamAtendimentoDataperWeek called");
         try {
-            LocalDateTime startDate = LocalDateTime.parse(startData);
-            LocalDateTime endDate = LocalDateTime.parse(endData);
+            LocalDateTime startData = LocalDateTime.now().minusDays(7);
+            LocalDateTime endData = LocalDateTime.now();
 
-            String jsonObject = dataService.getAtendimentos(startDate, endDate);
+            String jsonObject = dataService.getAtendimentos(startData, endData);
             messagingTemplate.convertAndSend(stompTopic, jsonObject);
-
-            System.out.println("startData: " + startData);
-            System.out.println("endData: " + endData);
         }catch (Exception e){
             e.printStackTrace();
         }
