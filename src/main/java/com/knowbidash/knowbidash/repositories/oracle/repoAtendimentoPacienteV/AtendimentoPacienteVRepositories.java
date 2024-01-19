@@ -13,13 +13,12 @@ import java.util.List;
 @Repository
 public interface AtendimentoPacienteVRepositories extends JpaRepository<AtendimentoPacienteV, Long> {
 
-    @Query("SELECT t FROM AtendimentoPacienteV t WHERE t.dtEntrada BETWEEN :startData AND :endData")
-    List<AtendimentoPacienteV> findByDtEntradaBetween(@Param("startData") LocalDateTime startData, @Param("endData") LocalDateTime endData);
+    List<AtendimentoPacienteV> findByDtEntradaBetween(LocalDateTime startData, LocalDateTime endData);
 
     @Query("SELECT NEW com.knowbidash.knowbidash.DTO.AtendimentoPacienteDTO(MONTH(t.dtEntrada), YEAR(t.dtEntrada), COUNT(t)) " +
             "FROM AtendimentoPacienteV t " +
-            "WHERE (YEAR(t.dtEntrada) = :currentYear AND MONTH(t.dtEntrada) <= :currentMonth) " +
+            "WHERE t.dtEntrada BETWEEN :startDate AND :endDate " +
             "OR (YEAR(t.dtEntrada) < :currentYear) " +
             "GROUP BY MONTH(t.dtEntrada), YEAR(t.dtEntrada)")
-    List<AtendimentoPacienteDTO> findTotalByMonthsInYear(@Param("currentYear") int year, @Param("currentMonth") int currentMonth);
+    List<AtendimentoPacienteDTO> findTotalByMonthsInYear(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }

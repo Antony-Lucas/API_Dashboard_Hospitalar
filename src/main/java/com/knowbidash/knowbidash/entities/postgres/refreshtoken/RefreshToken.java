@@ -2,6 +2,8 @@ package com.knowbidash.knowbidash.entities.postgres.refreshtoken;
 
 import com.knowbidash.knowbidash.entities.postgres.user.User;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 

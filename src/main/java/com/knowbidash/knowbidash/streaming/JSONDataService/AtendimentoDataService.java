@@ -6,6 +6,7 @@ import com.knowbidash.knowbidash.repositories.oracle.repoAtendimentoPacienteV.At
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,14 +21,14 @@ import java.util.Map;
 public class AtendimentoDataService {
     @Autowired
     private AtendimentoPacienteVRepositories atendimentoPacienteRepo;
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
-    public String getAtendimentoPerMonth(){
+    public String getAtendimentoPerMonth(LocalDateTime startDate, LocalDateTime endDate){
         JSONObject jsonResponse = new JSONObject();
 
         try{
-            int currentYear = Year.now().getValue();
-            int currentMonth = LocalDate.now().getMonthValue();
-            List<AtendimentoPacienteDTO> atendimentoPacienteV = atendimentoPacienteRepo.findTotalByMonthsInYear(currentYear, currentMonth);
+            List<AtendimentoPacienteDTO> atendimentoPacienteV = atendimentoPacienteRepo.findTotalByMonthsInYear(startDate, endDate);
 
             JSONArray atendimentoPacientePorMesArray = new JSONArray();
             DateTimeFormatter formatterMonth = DateTimeFormatter.ofPattern("yyyy-MM");

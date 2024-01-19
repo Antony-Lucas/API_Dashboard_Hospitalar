@@ -1,23 +1,33 @@
 package com.knowbidash.knowbidash.services.postgres;
 
+import com.knowbidash.knowbidash.entities.postgres.role.Role;
 import com.knowbidash.knowbidash.entities.postgres.user.User;
 import com.knowbidash.knowbidash.exceptions.DataBaseException;
 import com.knowbidash.knowbidash.exceptions.ResourceNotFoundException;
+import com.knowbidash.knowbidash.repositories.postgres.repoRoles.RoleRepositories;
 import com.knowbidash.knowbidash.repositories.postgres.repoUser.UserRepositories;
+import com.knowbidash.knowbidash.roles.ERole;
+import com.knowbidash.knowbidash.security.payload.request.SignUpRequest;
+import com.knowbidash.knowbidash.security.payload.response.MessageResponse;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserServices {
     @Autowired
     private UserRepositories userRepositories;
+    @Autowired
+    private RoleRepositories roleRepositories;
 
     @Autowired
     private final PasswordEncoder encoder;
@@ -33,15 +43,6 @@ public class UserServices {
     public User findById(Long id){
         Optional<User> obj = userRepositories.findById(id);
         return obj.orElseThrow(() -> new ResourceNotFoundException(id));
-    }
-
-    public User insert(User obj){
-        try {
-            obj.setPassWord(encoder.encode(obj.getPassWord()));
-            return userRepositories.save(obj);
-        }catch (DataIntegrityViolationException e){
-            throw new DataBaseException(e.getMessage());
-        }
     }
 
     public void delete(Long id){

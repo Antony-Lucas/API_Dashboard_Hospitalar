@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Size;
 import java.util.Set;
 
 public class SignUpRequest {
+
+    private Long id;
     @NotBlank
     @Size(min = 3, max = 30)
     private String userName;
@@ -26,6 +28,14 @@ public class SignUpRequest {
     @NotBlank
     @Size(min = 3, max = 40)
     private String passWord;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUserName() {
         return userName;

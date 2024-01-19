@@ -11,10 +11,10 @@ public class KafkaConsumer {
     private SimpMessagingTemplate messagingTemplate;
 
     private String latestMessage = "";
-    @KafkaListener(topics = "topic1")
+    @KafkaListener(topics = "/topic1")
     public void listen(String message) {
         System.out.println("Received message: " + message);
-        messagingTemplate.convertAndSend("topic/kafka-messages", message);
+        messagingTemplate.convertAndSend("/topic/kafka-messages", message);
         latestMessage = message;
     }
 

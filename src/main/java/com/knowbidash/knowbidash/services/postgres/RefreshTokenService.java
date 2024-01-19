@@ -1,6 +1,7 @@
 package com.knowbidash.knowbidash.services.postgres;
 
 import com.knowbidash.knowbidash.entities.postgres.refreshtoken.RefreshToken;
+import com.knowbidash.knowbidash.entities.postgres.user.User;
 import com.knowbidash.knowbidash.exceptions.TokenRefreshException;
 import com.knowbidash.knowbidash.repositories.postgres.repoRefreshToken.RefreshTokenRepositories;
 import com.knowbidash.knowbidash.repositories.postgres.repoUser.UserRepositories;
@@ -28,14 +29,26 @@ public class RefreshTokenService {
 
     public RefreshToken createRefreshToken(Long userId){
         RefreshToken refreshToken = new RefreshToken();
-
         refreshToken.setUser(userRepositories.findById(userId).get());
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
         refreshToken.setToken(UUID.randomUUID().toString());
 
-        refreshToken = refreshTokenRepositories.save(refreshToken);
+        User user = refreshToken.getUser();
+        Instant newExpiryDate = refreshToken.getExpiryDate();
+        String newToken =refreshToken.getToken();
 
-        return refreshToken;
+        RefreshToken existingToken = refreshTokenRepositories.findByUser(user);
+
+        if (existingToken != null){
+            existingToken.setToken(newToken);
+            existingToken.setExpiryDate(newExpiryDate);
+            return refreshTokenRepositories.save(existingToken);
+        }else{
+            refreshToken.setUser(user);
+            refreshToken.setToken(newToken);
+            refreshToken.setExpiryDate(newExpiryDate);
+            return refreshTokenRepositories.save(refreshToken);
+        }
     }
 
     public RefreshToken verifyExpiration(RefreshToken token){

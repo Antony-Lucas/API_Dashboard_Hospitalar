@@ -2,6 +2,7 @@ package com.knowbidash.knowbidash.entities.postgres.user;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.knowbidash.knowbidash.entities.postgres.refreshtoken.RefreshToken;
 import com.knowbidash.knowbidash.entities.postgres.role.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -34,7 +35,6 @@ public class User{
     @NotBlank
     @Size(max = 120)
     private String passWord;
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
