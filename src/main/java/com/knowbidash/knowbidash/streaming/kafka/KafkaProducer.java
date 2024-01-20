@@ -15,4 +15,15 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class KafkaProducer {
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final ObjectMapper objectMapper;
+
+    public void sendMessageUpdateDatabase(Object update) {
+        try {
+            String mensagem = objectMapper.writeValueAsString(update);
+            kafkaTemplate.send("topic1", mensagem);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,8 +18,7 @@ public interface AtendimentoPacienteVRepositories extends JpaRepository<Atendime
 
     @Query("SELECT NEW com.knowbidash.knowbidash.DTO.AtendimentoPacienteDTO(MONTH(t.dtEntrada), YEAR(t.dtEntrada), COUNT(t)) " +
             "FROM AtendimentoPacienteV t " +
-            "WHERE t.dtEntrada BETWEEN :startDate AND :endDate " +
-            "OR (YEAR(t.dtEntrada) < :currentYear) " +
+            "WHERE t.dtEntrada >= :startDate AND t.dtEntrada <= :endDate " +
             "GROUP BY MONTH(t.dtEntrada), YEAR(t.dtEntrada)")
-    List<AtendimentoPacienteDTO> findTotalByMonthsInYear(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+    List<AtendimentoPacienteDTO> findTotalByMonthsInPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 }

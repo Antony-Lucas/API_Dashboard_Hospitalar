@@ -3,6 +3,7 @@ package com.knowbidash.knowbidash.entities.oracle.atendimentopaciente;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,12 +16,12 @@ public class AtendimentoPacienteV {
     @Column(name = "nm_medico")
     private String nmMedico;
     @Column(name = "dt_entrada")
-    private LocalDateTime dtEntrada;
+    private LocalDate dtEntrada;
 
     public AtendimentoPacienteV(){
 
     }
-    public AtendimentoPacienteV(Integer nrAtendimento, String nmMedico, LocalDateTime dtEntrada) {
+    public AtendimentoPacienteV(Integer nrAtendimento, String nmMedico, LocalDate dtEntrada) {
         this.nrAtendimento = nrAtendimento;
         this.nmMedico = nmMedico;
         this.dtEntrada = dtEntrada;
@@ -42,11 +43,11 @@ public class AtendimentoPacienteV {
         this.nmMedico = nmMedico;
     }
 
-    public LocalDateTime getDtEntrada() {
+    public LocalDate getDtEntrada() {
         return dtEntrada;
     }
 
-    public void setDtEntrada(LocalDateTime dtEntrada) {
+    public void setDtEntrada(LocalDate dtEntrada) {
         this.dtEntrada = dtEntrada;
     }
 }

@@ -15,13 +15,15 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
-@Component
-@EnableScheduling
+@Controller
 public class WebsocketStream {
     @Value("/topic1")
     private String stompTopic;
@@ -32,14 +34,16 @@ public class WebsocketStream {
     @Autowired
     private KafkaProducer kafkaProducer;
 
-    @Scheduled(fixedRate = 2000)
-    public void streamAtendimentoDataperWeek(){
-        System.out.println("streamAtendimentoDataperWeek called");
+    @MessageMapping("/stream")
+    public void streamAtendimentoDataperWeek(@Payload Map<String, String> dateRange){
         try {
-            LocalDateTime startData = LocalDateTime.now().minusDays(7);
-            LocalDateTime endData = LocalDateTime.now();
+            LocalDate startData = LocalDate.parse(dateRange.get("startData"));
+            LocalDate endData = LocalDate.parse(dateRange.get("endData"));
 
-            String jsonObject = dataService.getAtendimentos(startData, endData);
+            System.out.println("startData" + startData);
+            System.out.println("endData" + endData);
+
+            String jsonObject = dataService.getAtendimentoPerMonth(startData, endData);
             messagingTemplate.convertAndSend(stompTopic, jsonObject);
         }catch (Exception e){
             e.printStackTrace();

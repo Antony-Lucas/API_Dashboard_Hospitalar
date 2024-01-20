@@ -1,25 +1,26 @@
 package com.knowbidash.knowbidash.entities.oracle.atendimentopaciente;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class FiltroData {
-    private LocalDateTime startData;
+    private LocalDate startData;
 
-    private LocalDateTime endData;
+    private LocalDate endData;
 
-    public LocalDateTime getStartData() {
+    public LocalDate getStartData() {
         return startData;
     }
 
-    public void setStartData(LocalDateTime startData) {
+    public void setStartData(LocalDate startData) {
         this.startData = startData;
     }
 
-    public LocalDateTime getEndData() {
+    public LocalDate getEndData() {
         return endData;
     }
 
-    public void setEndData(LocalDateTime endData) {
+    public void setEndData(LocalDate endData) {
         this.endData = endData;
     }
 }

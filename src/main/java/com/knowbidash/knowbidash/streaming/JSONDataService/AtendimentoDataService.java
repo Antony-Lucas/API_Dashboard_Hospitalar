@@ -24,11 +24,11 @@ public class AtendimentoDataService {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    public String getAtendimentoPerMonth(LocalDateTime startDate, LocalDateTime endDate){
+    public String getAtendimentoPerMonth(LocalDate startDate, LocalDate endDate){
         JSONObject jsonResponse = new JSONObject();
 
         try{
-            List<AtendimentoPacienteDTO> atendimentoPacienteV = atendimentoPacienteRepo.findTotalByMonthsInYear(startDate, endDate);
+            List<AtendimentoPacienteDTO> atendimentoPacienteV = atendimentoPacienteRepo.findTotalByMonthsInPeriod(startDate, endDate);
 
             JSONArray atendimentoPacientePorMesArray = new JSONArray();
             DateTimeFormatter formatterMonth = DateTimeFormatter.ofPattern("yyyy-MM");
@@ -55,11 +55,10 @@ public class AtendimentoDataService {
             List<AtendimentoPacienteV> atendimentoPacienteV = atendimentoPacienteRepo.findByDtEntradaBetween(startData, endData);
             //retorna dados gerais dos atendimentos
             JSONArray atendimentoPacienteArray = new JSONArray();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             for (AtendimentoPacienteV atendimentoPaciente: atendimentoPacienteV){
                 JSONObject atendimentoPacienteJson = new JSONObject();
                 atendimentoPacienteJson.put("label", atendimentoPaciente.getNmMedico());
-                atendimentoPacienteJson.put("data", atendimentoPaciente.getDtEntrada().format(formatter));
+                atendimentoPacienteJson.put("data", atendimentoPaciente.getDtEntrada());
                 atendimentoPacienteArray.put(atendimentoPacienteJson);
             }
 
