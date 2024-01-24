@@ -20,5 +20,11 @@ public interface AtendimentoPacienteVRepositories extends JpaRepository<Atendime
             "FROM AtendimentoPacienteV t " +
             "WHERE t.dtEntrada >= :startDate AND t.dtEntrada <= :endDate " +
             "GROUP BY MONTH(t.dtEntrada), YEAR(t.dtEntrada)")
-    List<AtendimentoPacienteDTO> findTotalByMonthsInPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+    List<AtendimentoPacienteDTO> findTotalByMonthsInPeriod(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+
+    @Query("SELECT NEW com.knowbidash.knowbidash.DTO.AtendimentoPacienteDTO(MONTH(t.dtEntrada), YEAR(t.dtEntrada), COUNT(t), t.dsConvenio) " +
+            "FROM AtendimentoPacienteV t " +
+            "WHERE t.dtEntrada >= :startDate AND t.dtEntrada <= :endDate " +
+            "GROUP BY MONTH(t.dtEntrada), YEAR(t.dtEntrada), t.dsConvenio")
+    List<AtendimentoPacienteDTO> findTotalAtendimentosInPeriod(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }

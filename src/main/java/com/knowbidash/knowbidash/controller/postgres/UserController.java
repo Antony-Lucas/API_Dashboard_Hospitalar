@@ -59,7 +59,7 @@ public class UserController {
         return ResponseEntity.ok().body(obj);
     }
 
-    @PostMapping
+    @PostMapping(value = "/signup")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> insert(@Validated @RequestBody SignUpRequest signUpRequest) throws Exception{
         try {

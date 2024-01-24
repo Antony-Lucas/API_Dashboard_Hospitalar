@@ -16,15 +16,18 @@ public class AtendimentoPacienteV {
     @Column(name = "nm_medico")
     private String nmMedico;
     @Column(name = "dt_entrada")
-    private LocalDate dtEntrada;
+    private LocalDateTime dtEntrada;
+    @Column(name = "ds_convenio")
+    private String dsConvenio;
 
     public AtendimentoPacienteV(){
 
     }
-    public AtendimentoPacienteV(Integer nrAtendimento, String nmMedico, LocalDate dtEntrada) {
+    public AtendimentoPacienteV(Integer nrAtendimento, String nmMedico, LocalDateTime dtEntrada, String dsConvenio) {
         this.nrAtendimento = nrAtendimento;
         this.nmMedico = nmMedico;
         this.dtEntrada = dtEntrada;
+        this.dsConvenio = dsConvenio;
     }
 
     public Integer getNrAtendimento() {
@@ -43,11 +46,19 @@ public class AtendimentoPacienteV {
         this.nmMedico = nmMedico;
     }
 
-    public LocalDate getDtEntrada() {
+    public LocalDateTime getDtEntrada() {
         return dtEntrada;
     }
 
-    public void setDtEntrada(LocalDate dtEntrada) {
+    public void setDtEntrada(LocalDateTime dtEntrada) {
         this.dtEntrada = dtEntrada;
+    }
+
+    public String getDsConvenio() {
+        return dsConvenio;
+    }
+
+    public void setDsConvenio(String dsConvenio) {
+        this.dsConvenio = dsConvenio;
     }
 }

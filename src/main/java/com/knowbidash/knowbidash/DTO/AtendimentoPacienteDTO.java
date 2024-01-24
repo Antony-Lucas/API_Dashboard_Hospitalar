@@ -4,11 +4,15 @@ public class AtendimentoPacienteDTO {
     private int mes;
     private int year;
     private long total;
+    private String dsConvenio;
 
-    public AtendimentoPacienteDTO(int mes, int year, long total){
+    public AtendimentoPacienteDTO(){}
+
+    public AtendimentoPacienteDTO(int mes, int year, long total, String dsConvenio){
         this.mes = mes;
         this.year = year;
         this.total = total;
+        this.dsConvenio = dsConvenio;
     }
 
     public int getMes() {
@@ -33,5 +37,13 @@ public class AtendimentoPacienteDTO {
 
     public void setTotal(long total) {
         this.total = total;
+    }
+
+    public String getDsConvenio() {
+        return dsConvenio;
+    }
+
+    public void setDsConvenio(String dsConvenio) {
+        this.dsConvenio = dsConvenio;
     }
 }

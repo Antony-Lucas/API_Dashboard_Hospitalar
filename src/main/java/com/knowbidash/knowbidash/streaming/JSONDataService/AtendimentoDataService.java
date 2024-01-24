@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -24,47 +22,44 @@ public class AtendimentoDataService {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    public String getAtendimentoPerMonth(LocalDate startDate, LocalDate endDate){
-        JSONObject jsonResponse = new JSONObject();
-
-        try{
-            List<AtendimentoPacienteDTO> atendimentoPacienteV = atendimentoPacienteRepo.findTotalByMonthsInPeriod(startDate, endDate);
-
-            JSONArray atendimentoPacientePorMesArray = new JSONArray();
-            DateTimeFormatter formatterMonth = DateTimeFormatter.ofPattern("yyyy-MM");
-            for (AtendimentoPacienteDTO atendimentoPaciente: atendimentoPacienteV){
-                JSONObject atendimentoPerMonth = new JSONObject();
-                String monthYear = String.format("%02d-%d", atendimentoPaciente.getMes(), atendimentoPaciente.getYear());
-                atendimentoPerMonth.put("mes", monthYear);
-                atendimentoPerMonth.put("total", atendimentoPaciente.getTotal());
-                atendimentoPacientePorMesArray.put(atendimentoPerMonth);
-            }
-
-            jsonResponse.put("atendimentopormes", atendimentoPacientePorMesArray);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return jsonResponse.toString();
-    }
-
-    public String getAtendimentos(LocalDateTime startData, LocalDateTime endData){
+    public String getAtendimentoPerMonth(LocalDateTime startDate, LocalDateTime endDate){
         JSONObject jsonResponse = new JSONObject();
 
         try {
-            List<AtendimentoPacienteV> atendimentoPacienteV = atendimentoPacienteRepo.findByDtEntradaBetween(startData, endData);
-            //retorna dados gerais dos atendimentos
-            JSONArray atendimentoPacienteArray = new JSONArray();
-            for (AtendimentoPacienteV atendimentoPaciente: atendimentoPacienteV){
-                JSONObject atendimentoPacienteJson = new JSONObject();
-                atendimentoPacienteJson.put("label", atendimentoPaciente.getNmMedico());
-                atendimentoPacienteJson.put("data", atendimentoPaciente.getDtEntrada());
-                atendimentoPacienteArray.put(atendimentoPacienteJson);
+            List<AtendimentoPacienteDTO> atendimentoPacienteV = atendimentoPacienteRepo.findTotalAtendimentosInPeriod(startDate, endDate);
+
+            Map<String, Long> atendimentoPerMonthMap = new HashMap<>();
+            Map<String, Long> atendimentoPerConvMap = new HashMap<>();
+
+            for (AtendimentoPacienteDTO atendimentoPaciente : atendimentoPacienteV){
+                String mesAno = String.format("%02d-%d", atendimentoPaciente.getMes(), atendimentoPaciente.getYear());
+
+                // Somando valores para cada mês
+                atendimentoPerMonthMap.put(mesAno, atendimentoPerMonthMap.getOrDefault(mesAno, 0L) + atendimentoPaciente.getTotal());
+
+                // Somando valores para cada convênio
+                String convenio = atendimentoPaciente.getDsConvenio();
+                atendimentoPerConvMap.put(convenio, atendimentoPerConvMap.getOrDefault(convenio, 0L) + atendimentoPaciente.getTotal());
             }
 
-            jsonResponse.put("AtendimentoPaciente", atendimentoPacienteArray);
-            //
-        } catch (Exception e){
+            JSONArray atendimentoPacientePorMesArray = new JSONArray();
+            for (Map.Entry<String, Long> entry : atendimentoPerMonthMap.entrySet()) {
+                JSONObject atendimentoPorMes = new JSONObject();
+                atendimentoPorMes.put("mes", entry.getKey());
+                atendimentoPorMes.put("total", entry.getValue());
+                atendimentoPacientePorMesArray.put(atendimentoPorMes);
+            }
+            jsonResponse.put("atendimentopormes", atendimentoPacientePorMesArray);
+
+            JSONArray atendimentosPorConvenioArray = new JSONArray();
+            for (Map.Entry<String, Long> entry : atendimentoPerConvMap.entrySet()){
+                JSONObject atendimentoPorConvenio = new JSONObject();
+                atendimentoPorConvenio.put("convenio", entry.getKey());
+                atendimentoPorConvenio.put("total", entry.getValue());
+                atendimentosPorConvenioArray.put(atendimentoPorConvenio);
+            }
+            jsonResponse.put("atendimentoporconvenio", atendimentosPorConvenioArray);
+        }catch (Exception e){
             e.printStackTrace();
         }
 

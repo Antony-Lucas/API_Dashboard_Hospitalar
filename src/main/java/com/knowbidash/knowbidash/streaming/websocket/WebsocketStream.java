@@ -1,7 +1,5 @@
 package com.knowbidash.knowbidash.streaming.websocket;
 
-import com.knowbidash.knowbidash.entities.oracle.atendimentopaciente.FiltroData;
-import com.knowbidash.knowbidash.entities.oracle.models.AtendimentoFilterRequests;
 import com.knowbidash.knowbidash.streaming.JSONDataService.AtendimentoDataService;
 import com.knowbidash.knowbidash.streaming.kafka.KafkaProducer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,39 +23,30 @@ import java.util.Map;
 
 @Controller
 public class WebsocketStream {
-    @Value("/topic1")
-    private String stompTopic;
     @Autowired
-    private SimpMessagingTemplate messagingTemplate;
+    private final SimpMessagingTemplate messagingTemplate;
     @Autowired
     private AtendimentoDataService dataService;
     @Autowired
     private KafkaProducer kafkaProducer;
 
+    public WebsocketStream (SimpMessagingTemplate simpMessagingTemplate){
+        this.messagingTemplate = simpMessagingTemplate;
+    }
+
     @MessageMapping("/stream")
     public void streamAtendimentoDataperWeek(@Payload Map<String, String> dateRange){
         try {
-            LocalDate startData = LocalDate.parse(dateRange.get("startData"));
-            LocalDate endData = LocalDate.parse(dateRange.get("endData"));
+            LocalDateTime startData = LocalDateTime.parse(dateRange.get("startData"));
+            LocalDateTime endData = LocalDateTime.parse(dateRange.get("endData"));
 
             System.out.println("startData" + startData);
             System.out.println("endData" + endData);
 
             String jsonObject = dataService.getAtendimentoPerMonth(startData, endData);
-            messagingTemplate.convertAndSend(stompTopic, jsonObject);
+            messagingTemplate.convertAndSend("/topic1", jsonObject);
         }catch (Exception e){
             e.printStackTrace();
         }
     }
-
-    /*@MessageMapping("/atendimento")
-    @SendTo("/topic1")
-    public void streamAtendimentoPerMonth(@Payload AtendimentoFilterRequests requests){
-        try{
-            String jsonObject = dataService.getAtendimentoPerMonth(requests.getStartDate(), requests.getEndDate());
-            messagingTemplate.convertAndSend(stompTopic, jsonObject);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }*/
 }
