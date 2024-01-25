@@ -78,7 +78,25 @@ public class UserServices {
     private void updateData(User entity, User obj){
         entity.setUserName(obj.getUserName());
         entity.setfullUserName(obj.getfullUserName());
+        entity.setCargo(obj.getCargo());
         entity.setEmail(obj.getEmail());
+        entity.setPassWord(encoder.encode(obj.getPassWord()));
+    }
+
+    public User updateRoles(Long userId, Set<String> roleNames){
+        User user = findById(userId);
+        Set<Role> roles = new HashSet<>();
+
+        if (roleNames != null){
+            roleNames.forEach(roleName -> {
+                Role role = roleRepositories.findByName(ERole.valueOf(roleName.toUpperCase()))
+                        .orElseThrow(() -> new RuntimeException("Erro: função não encontrada."));
+                roles.add(role);
+            });
+        }
+
+        user.setRoles(roles);
+        return userRepositories.save(user);
     }
 
     public void updateDataPassword(User entity, User obj) {

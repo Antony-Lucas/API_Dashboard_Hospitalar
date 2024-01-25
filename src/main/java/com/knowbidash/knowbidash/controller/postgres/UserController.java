@@ -3,6 +3,7 @@ package com.knowbidash.knowbidash.controller.postgres;
 import com.knowbidash.knowbidash.entities.postgres.role.Role;
 import com.knowbidash.knowbidash.entities.postgres.user.User;
 import com.knowbidash.knowbidash.exceptions.DataBaseException;
+import com.knowbidash.knowbidash.exceptions.ResourceNotFoundException;
 import com.knowbidash.knowbidash.repositories.postgres.repoRoles.RoleRepositories;
 import com.knowbidash.knowbidash.repositories.postgres.repoUser.UserRepositories;
 import com.knowbidash.knowbidash.roles.ERole;
@@ -119,11 +120,40 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping(value = "/update/{id}")
+    @PatchMapping(value = "/update/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User obj){
-        obj = userServices.update(id, obj);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<?> update(@PathVariable Long id, @Validated @RequestBody SignUpRequest updatedUserData){
+        User existingUser = userRepositories.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+        existingUser.setUserName(updatedUserData.getUserName());
+        existingUser.setfullUserName(updatedUserData.getfullUserName());
+        existingUser.setCargo(updatedUserData.getCargo());
+        existingUser.setEmail(updatedUserData.getEmail());
+        existingUser.setPassWord(encoder.encode(updatedUserData.getPassWord()));
+
+        Set<Role> roles = new HashSet<>();
+        if (updatedUserData.getRole() != null) {
+            updatedUserData.getRole().forEach(role -> {
+                switch (role) {
+                    case "admin":
+                        roles.add(roleRepositories.findByName(ERole.ROLE_ADMIN)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+                        break;
+                    case "mod":
+                        roles.add(roleRepositories.findByName(ERole.ROLE_MODERATOR)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+                        break;
+                    default:
+                        roles.add(roleRepositories.findByName(ERole.ROLE_USER)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+                        break;
+                }
+            });
+        }
+        existingUser.setRoles(roles);
+        userRepositories.save(existingUser);
+
+        return ResponseEntity.ok(new MessageResponse("User updated successfully!"));
     }
 
 }

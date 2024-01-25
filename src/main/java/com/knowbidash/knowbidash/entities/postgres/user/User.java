@@ -28,6 +28,8 @@ public class User{
     @NotBlank
     @Size(max = 40)
     private String fullUserName;
+    @NotBlank
+    @Size(max = 30)
     private String cargo;
     @NotBlank
     @Size(max = 50)
