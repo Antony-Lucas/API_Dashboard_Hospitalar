@@ -5,14 +5,22 @@ public class AtendimentoPacienteDTO {
     private int year;
     private long total;
     private String dsConvenio;
+    private String dsClinica;
+    private String nmMedico;
+    private String dsSetorAtendimento;
+    private String nrAnos;
 
     public AtendimentoPacienteDTO(){}
 
-    public AtendimentoPacienteDTO(int mes, int year, long total, String dsConvenio){
+    public AtendimentoPacienteDTO(int mes, int year, long total, String dsConvenio, String dsClinica, String nmMedico, String dsSetorAtendimento, String nrAnos){
         this.mes = mes;
         this.year = year;
         this.total = total;
         this.dsConvenio = dsConvenio;
+        this.dsClinica = dsClinica;
+        this.nmMedico = nmMedico;
+        this.dsSetorAtendimento = dsSetorAtendimento;
+        this.nrAnos = nrAnos;
     }
 
     public int getMes() {
@@ -45,5 +53,33 @@ public class AtendimentoPacienteDTO {
 
     public void setDsConvenio(String dsConvenio) {
         this.dsConvenio = dsConvenio;
+    }
+
+    public String getDsClinica() {
+        return dsClinica;
+    }
+
+    public void setDsClinica(String dsClinica) {
+        this.dsClinica = dsClinica;
+    }
+    public String getNmMedico() {
+        return nmMedico;
+    }
+    public void setNmMedico(String nmMedico) {
+        this.nmMedico = nmMedico;
+    }
+    public String getDsSetorAtendimento() {
+        return dsSetorAtendimento;
+    }
+    public void setDsSetorAtendimento(String dsSetorAtendimento) {
+        this.dsSetorAtendimento = dsSetorAtendimento;
+    }
+
+    public String getNrAnos() {
+        return nrAnos;
+    }
+
+    public void setNrAnos(String nrAnos) {
+        this.nrAnos = nrAnos;
     }
 }

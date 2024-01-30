@@ -113,7 +113,7 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/delete/{id}")
-    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> deleteUser(@PathVariable Long id){
         refreshTokenService.deleteyUserId(id);
         userServices.delete(id);

@@ -13,18 +13,10 @@ import java.util.List;
 
 @Repository
 public interface AtendimentoPacienteVRepositories extends JpaRepository<AtendimentoPacienteV, Long> {
-
     List<AtendimentoPacienteV> findByDtEntradaBetween(LocalDateTime startData, LocalDateTime endData);
-
-    @Query("SELECT NEW com.knowbidash.knowbidash.DTO.AtendimentoPacienteDTO(MONTH(t.dtEntrada), YEAR(t.dtEntrada), COUNT(t)) " +
+    @Query("SELECT NEW com.knowbidash.knowbidash.DTO.AtendimentoPacienteDTO(MONTH(t.dtEntrada), YEAR(t.dtEntrada), COUNT(t), t.dsConvenio, t.dsClinica, t.nmMedico, t.dsSetorAtendimento, t.nrAnos) " +
             "FROM AtendimentoPacienteV t " +
             "WHERE t.dtEntrada >= :startDate AND t.dtEntrada <= :endDate " +
-            "GROUP BY MONTH(t.dtEntrada), YEAR(t.dtEntrada)")
-    List<AtendimentoPacienteDTO> findTotalByMonthsInPeriod(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
-
-    @Query("SELECT NEW com.knowbidash.knowbidash.DTO.AtendimentoPacienteDTO(MONTH(t.dtEntrada), YEAR(t.dtEntrada), COUNT(t), t.dsConvenio) " +
-            "FROM AtendimentoPacienteV t " +
-            "WHERE t.dtEntrada >= :startDate AND t.dtEntrada <= :endDate " +
-            "GROUP BY MONTH(t.dtEntrada), YEAR(t.dtEntrada), t.dsConvenio")
+            "GROUP BY MONTH(t.dtEntrada), YEAR(t.dtEntrada), t.dsConvenio, t.dsClinica, t.nmMedico, t.dsSetorAtendimento, t.nrAnos")
     List<AtendimentoPacienteDTO> findTotalAtendimentosInPeriod(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }

@@ -30,12 +30,16 @@ public class WebsocketStream {
     @Autowired
     private KafkaProducer kafkaProducer;
 
-    public WebsocketStream (SimpMessagingTemplate simpMessagingTemplate){
-        this.messagingTemplate = simpMessagingTemplate;
+    @Autowired
+    public WebsocketStream(SimpMessagingTemplate messagingTemplate, AtendimentoDataService dataService, KafkaProducer kafkaProducer) {
+        this.messagingTemplate = messagingTemplate;
+        this.dataService = dataService;
+        this.kafkaProducer = kafkaProducer;
     }
 
     @MessageMapping("/stream")
-    public void streamAtendimentoDataperWeek(@Payload Map<String, String> dateRange){
+    @SendTo("/topic/atendimentos")
+    public String streamAtendimentoDataperWeek(@Payload Map<String, String> dateRange){
         try {
             LocalDateTime startData = LocalDateTime.parse(dateRange.get("startData"));
             LocalDateTime endData = LocalDateTime.parse(dateRange.get("endData"));
@@ -44,9 +48,10 @@ public class WebsocketStream {
             System.out.println("endData" + endData);
 
             String jsonObject = dataService.getAtendimentoPerMonth(startData, endData);
-            messagingTemplate.convertAndSend("/topic1", jsonObject);
+            return jsonObject;
         }catch (Exception e){
             e.printStackTrace();
+            return "Erro ao obter dados de atendimento";
         }
     }
 }
